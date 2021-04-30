@@ -1,0 +1,19 @@
+{
+  "name": "AnomalyDetectionWebApp",
+  "version": "1.0.0",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "d3": "^6.7.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^5.12.7",
+    "nodemon": "^2.0.7",
+    "react": "^17.0.2",
+    "react-dropzone-uploader": "^2.11.0"
+  },
+  "devDependencies": {
+    "dropzone": "^5.9.2",
+    "smallest-enclosing-circle": "^1.0.2"
+  }
+}
