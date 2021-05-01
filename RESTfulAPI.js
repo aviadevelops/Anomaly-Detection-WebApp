@@ -1,33 +1,22 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const smallestEnclosingCircle = require("smallest-enclosing-circle");
+
+
 
 
 let sum = 0, cx = 0, cy = 0, radius = 0;
-const app = express();
-
-function calculateSmallestEnclosingCircle(points) {
-    return smallestEnclosingCircle(points);
-}
 
 
-console.log(smallestEnclosingCircle([{x: 0, y: 0}, {x: 10, y: 10}, {x: 20, y: 20}, {x: 50, y: 50}]))
 
 
-app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(express.static("public"));
 
-exports.getAPI = function () {
-   return new RESTfulAPI();
+
+exports.createAPI = function (app) {
+   return new RESTfulAPI(app);
 };
 
 class RESTfulAPI {
 
-    constructor() {
+    constructor(app) {
 
 
         app.get("/", function (req, res) {
@@ -94,7 +83,8 @@ class RESTfulAPI {
             console.log(model_id);
             let isDone = false;
             if (!isDone) {
-                // redirect to "/api/model?model_id="+model_id
+                res.redirect("/api/model?model_id="+model_id);
+                return;
             }
             let anomalies = {anomalies: {col_name_1: [10, 12], col_name_2: [11, 23]}, reason: "Any"};
             console.log(JSON.stringify(anomalies));
@@ -105,16 +95,14 @@ class RESTfulAPI {
 
 
         app.post("/", function (req, res) {
-            console.log(req);
             const x = parseInt(req.body.x);
             const y = parseInt(req.body.y);
 
             sum = x + y;
             let points = [{x: 0, y: 0}, {x: 10, y: 10}, {x: 20, y: 20}, {x: 50, y: 50}];
-            let circle = calculateSmallestEnclosingCircle(points);
-            cx = circle.x;
-            cy = circle.y;
-            radius = circle.r;
+            cx = 1;
+            cy = 2;
+            radius = 3;
 
             res.set({
                 model_id: 3,
