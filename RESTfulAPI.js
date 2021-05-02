@@ -43,7 +43,7 @@ class RESTfulAPI {
                 res.status(200);
             }
             console.log(JSON.stringify(settings));
-            res.send(JSON.stringify(settings));
+            res.send(settings);
 
         });
 
@@ -55,7 +55,7 @@ class RESTfulAPI {
                 status: "pending"
             }, {model_id: 3, upload_time: "321321", status: "ready"}];
             console.log(JSON.stringify(models));
-            res.send(JSON.stringify(models));
+            res.send(models);
 
         });
 
@@ -71,7 +71,7 @@ class RESTfulAPI {
             }
             let settings = {model_id: 1, upload_time: "12321213321", status: "ready"};
             console.log(JSON.stringify(settings));
-            res.send(JSON.stringify(settings));
+            res.send(settings);
 
 
         });
@@ -88,7 +88,7 @@ class RESTfulAPI {
             }
             let anomalies = {anomalies: {col_name_1: [10, 12], col_name_2: [11, 23]}, reason: "Any"};
             console.log(JSON.stringify(anomalies));
-            res.send(JSON.stringify(anomalies));
+            res.send(anomalies);
 
 
         });
