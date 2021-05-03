@@ -13,7 +13,8 @@ vector<AnomalyReport> reportsVector;
 TimeSeries trainTS = TimeSeries(), testTS = TimeSeries();
 SimpleAnomalyDetector simpleAD;
 HybridAnomalyDetector hybridAD;
-bool isHybrid = true;
+std::string status = "ready";
+std::string detectorType;
 
 
  // unite sequence of anomalies with the same description
@@ -41,31 +42,6 @@ bool isHybrid = true;
        return continuousAnomaliesStartAndFinishIndexes;
     }
 
-Napi::String getHello(const Napi::CallbackInfo& info) {
-
-    Napi::Env env = info.Env();
-
-      double arg0 = info[0].As<Napi::Number>().DoubleValue();
-      double arg1 = info[1].As<Napi::Number>().DoubleValue();
-      double sum = arg0+arg1;
-
-    std::string result = helloworld::hello()+std::to_string(sum);
-
-    return Napi::String::New(env, result);
-}
-
-Napi::String getSig(const Napi::CallbackInfo& info) {
-
-    Napi::Env env = info.Env();
-
-     std::string arg0 = info[0].As<Napi::String>();
-     std::string arg1 = info[1].As<Napi::String>();
-
-    std::string result = arg0+arg1;
-
-    return Napi::String::New(env, result);
-}
-
 
 
 void createTrainTS(const Napi::CallbackInfo& info) {
@@ -85,25 +61,34 @@ void createTestTS(const Napi::CallbackInfo& info) {
 
 void learnNormal(const Napi::CallbackInfo& info){
 
+    status = "pending";
+
     Napi::Env env = info.Env();
-    if(isHybrid){
+    detectorType = info[0].As<Napi::String>();
+    if(detectorType == "hybrid"){
         hybridAD.learnNormal(trainTS);
     }
     else{
         simpleAD.learnNormal(trainTS);
     }
 
+    status = "ready";
 }
 
 void detect(const Napi::CallbackInfo& info){
 
+    status = "pending";
+
     Napi::Env env = info.Env();
-    if(isHybrid){
+    if(detectorType == "hybrid"){
         reportsVector = hybridAD.detect(testTS);
     }
     else{
         reportsVector = simpleAD.detect(testTS);
     }
+
+     status = "ready";
+
 
 }
 
@@ -124,16 +109,15 @@ Napi::Object getAnomalies(const Napi::CallbackInfo& info) {
     return startingIndexesMap;
 }
 
+Napi::String getStatus(const Napi::CallbackInfo& info) {
+
+    Napi::Env env = info.Env();
+
+    return Napi::String::New(env, status);
+}
+
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
 
-    exports.Set(
-        Napi::String::New(env, "getHello"),
-        Napi::Function::New(env, getHello)
-    );
-
-    exports.Set(Napi::String::New(env, "getSig"),
-                Napi::Function::New(env, getSig)
-    );
 
     exports.Set(Napi::String::New(env, "createTrainTS"),
                   Napi::Function::New(env, createTrainTS)
@@ -154,6 +138,10 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
         exports.Set(Napi::String::New(env, "getAnomalies"),
                               Napi::Function::New(env, getAnomalies)
               );
+
+               exports.Set(Napi::String::New(env, "getStatus"),
+                                            Napi::Function::New(env, getStatus)
+                            );
 
 
 

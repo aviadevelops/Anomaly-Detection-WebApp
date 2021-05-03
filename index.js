@@ -1,4 +1,5 @@
-const anomalyDetector = require( './build/Release/anomalydetector.node' );
+const anomalyDetector = require('./build/Release/anomalydetector.node');
+const Model = require(__dirname + "/model.js");
 
 console.log();
 
@@ -8,16 +9,23 @@ function getAnomalies() {
     let anomaliesArray = [];
     Object.entries(startingIndexesMap).forEach(entry => {
         const [key, value] = entry;
-        anomaliesArray.push([parseInt(key),value]);
+        anomaliesArray.push([parseInt(key), value]);
     });
     return anomaliesArray;
 
 }
 
-console.log( anomalyDetector.getHello(1,2) );
-console.log(anomalyDetector.getSig("Sig","Man"));
+
 anomalyDetector.createTrainTS("anomalyTrain.csv");
 anomalyDetector.createTestTS("anomalyTest.csv");
-anomalyDetector.learnNormal();
+anomalyDetector.learnNormal("regression");
 anomalyDetector.detect();
+console.log(anomalyDetector.getStatus());
 console.log(getAnomalies());
+
+
+
+
+
+let m = new Model.createModel(1, "ready");
+console.log(JSON.stringify(m));

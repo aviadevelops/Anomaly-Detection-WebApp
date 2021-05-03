@@ -1,17 +1,13 @@
-
-
-
-
+const server = require(__dirname + "/server.js");
+const Model = require(__dirname + "/model.js");
 let sum = 0, cx = 0, cy = 0, radius = 0;
 
 
 
 
 
-
-
 exports.createAPI = function (app) {
-   return new RESTfulAPI(app);
+    return new RESTfulAPI(app);
 };
 
 class RESTfulAPI {
@@ -33,45 +29,41 @@ class RESTfulAPI {
 
 
         app.get("/api/model", function (req, res) {
+            let isExistingModel = true;
             let model_id = req.query.model_id;
-            console.log(model_id);
-            let settings = {model_id: 1, upload_time: "12321213321", status: "ready"};
-            let isExistingModel = false;
+            let model = server.getModel(model_id);
+            if (model === -1){
+                isExistingModel = false;
+            }
             if (!isExistingModel) {
-                res.status(404);
+                res.status(404).send();
+                return;
             } else {
                 res.status(200);
             }
-            console.log(JSON.stringify(settings));
-            res.send(settings);
+            res.send(JSON.stringify(Model.getJson(model)));
 
         });
 
 
         app.get("/api/models", function (req, res) {
-            let models = [{model_id: 1, upload_time: "12321213321", status: "ready"}, {
-                model_id: 2,
-                upload_time: "12332113",
-                status: "pending"
-            }, {model_id: 3, upload_time: "321321", status: "ready"}];
-            console.log(JSON.stringify(models));
-            res.send(models);
+            res.send(JSON.stringify(server.getModels()));
 
         });
 
 
         app.post("/api/model", function (req, res) {
-            console.log("Im in");
             let model_type = req.query.model_type;
+            let model = server.getReadyModel();
             // let train_data = req.body.train_data;
+            model.createTrainTS("anomalyTrain.csv"); // need to get the csv first
             if (model_type === "regression") {
-                console.log("regression");
+                model.learnNormal("regression");
             } else {
-                console.log("hybrid");
+                model.learnNormal("hybrid");
             }
-            let settings = {model_id: 1, upload_time: "12321213321", status: "ready"};
-            console.log(JSON.stringify(settings));
-            res.send(settings);
+            model.updateStatus();
+            res.send(JSON.stringify(Model.getJson(model)));
 
 
         });
@@ -79,16 +71,24 @@ class RESTfulAPI {
 
         app.post("/api/anomaly", function (req, res) {
             let model_id = req.query.model_id;
-            //let train_data = req.body.predict_data;
+            let model = server.getModel(model_id);
+            model.createTestTS("anomalyTest.csv");
+            model.detect();
+            model.updateStatus();
+            //let predict_data = req.body.predict_data;
             console.log(model_id);
             let isDone = false;
+            if (model.status==="ready"){
+                isDone = true;
+            }
             if (!isDone) {
-                res.redirect("/api/model?model_id="+model_id);
+                res.redirect("/api/model?model_id=" + model_id);
                 return;
             }
-            let anomalies = {anomalies: {col_name_1: [10, 12], col_name_2: [11, 23]}, reason: "Any"};
+            let anomalies = model.getAnomalies();
+            // let anomalies = {anomalies: {col_name_1: [10, 12], col_name_2: [11, 23]}, reason: "Any"};
             console.log(JSON.stringify(anomalies));
-            res.send(anomalies);
+            res.send(JSON.stringify(anomalies));
 
 
         });

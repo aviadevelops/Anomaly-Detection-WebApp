@@ -36,6 +36,7 @@
     <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\..\bin\;$(MSBuildProjectDirectory)\..\bin\</ExecutablePath>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <IntDir>$(Configuration)\obj\$(ProjectName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.node</TargetExt>
@@ -50,7 +51,6 @@
       <AdditionalIncludeDirectories>C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\include\node;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\src;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\openssl\config;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\openssl\openssl\include;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\uv\include;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\zlib;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\v8\include;D:\AnomalyDetectionWebApp\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
-      <CompileAsWinRT>false</CompileAsWinRT>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4355;4800;4251;4275;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>false</ExceptionHandling>
@@ -65,12 +65,18 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWarningAsError>false</TreatWarningAsError>
       <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
+    <Lib>
+      <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\aviad\\AppData\\Local\\node-gyp\\Cache\\12.18.4\\x64\\node.lib&quot;</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4199 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(OutDir)$(ProjectName).node</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetExt>.node</TargetExt>
@@ -85,7 +91,6 @@
     <ClCompile>
       <AdditionalIncludeDirectories>C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\include\node;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\src;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\openssl\config;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\openssl\openssl\include;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\uv\include;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\zlib;C:\Users\aviad\AppData\Local\node-gyp\Cache\12.18.4\deps\v8\include;D:\AnomalyDetectionWebApp\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BufferSecurityCheck>true</BufferSecurityCheck>
-      <CompileAsWinRT>false</CompileAsWinRT>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4355;4800;4251;4275;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>false</ExceptionHandling>
@@ -104,12 +109,18 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWarningAsError>false</TreatWarningAsError>
       <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
+    <Lib>
+      <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\aviad\\AppData\\Local\\node-gyp\\Cache\\12.18.4\\x64\\node.lib&quot;</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4199 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(OutDir)$(ProjectName).node</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetExt>.node</TargetExt>
@@ -124,16 +135,34 @@
     <None Include="..\binding.gyp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\helloworld.cpp"/>
-    <ClCompile Include="..\src\index.cpp"/>
-    <ClCompile Include="..\src\anomaly_detection_util.cpp"/>
-    <ClCompile Include="..\src\CLI.cpp"/>
-    <ClCompile Include="..\src\HybridAnomalyDetector.cpp"/>
-    <ClCompile Include="..\src\minCircle.cpp"/>
-    <ClCompile Include="..\src\Server.cpp"/>
-    <ClCompile Include="..\src\SimpleAnomalyDetector.cpp"/>
-    <ClCompile Include="..\src\timeseries.cpp"/>
-    <ClCompile Include="C:\Program Files\nodejs\node_modules\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+    <ClCompile Include="..\src\helloworld.cpp">
+      <ObjectFileName>$(IntDir)\src\helloworld.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\index.cpp">
+      <ObjectFileName>$(IntDir)\src\index.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\anomaly_detection_util.cpp">
+      <ObjectFileName>$(IntDir)\src\anomaly_detection_util.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\CLI.cpp">
+      <ObjectFileName>$(IntDir)\src\CLI.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\HybridAnomalyDetector.cpp">
+      <ObjectFileName>$(IntDir)\src\HybridAnomalyDetector.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\minCircle.cpp">
+      <ObjectFileName>$(IntDir)\src\minCircle.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\Server.cpp">
+      <ObjectFileName>$(IntDir)\src\Server.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\SimpleAnomalyDetector.cpp">
+      <ObjectFileName>$(IntDir)\src\SimpleAnomalyDetector.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\timeseries.cpp">
+      <ObjectFileName>$(IntDir)\src\timeseries.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="D:\AnomalyDetectionWebApp\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="node_modules\node-addon-api\nothing.vcxproj">
