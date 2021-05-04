@@ -9,8 +9,17 @@
 using namespace std;
 
 TimeSeries::TimeSeries(string CSVfileName) {
-this->numOfRows = 0;
-loadFromCSVFile(CSVfileName);
+    loadFromCSVFile(CSVfileName);
+    this->numOfRows = propertyNamesToColumns.begin()->second.size();
+}
+
+TimeSeries::TimeSeries(const map<string, string>& parsedJson) {
+    for (auto const& column : parsedJson) {
+        this->propertiesRow.push_back(column.first);
+        this->propertyNamesToColumns.insert({column.first, vector<float>{}});
+        parseColumn(column.first, column.second);
+    }
+    this->numOfRows = propertyNamesToColumns.begin()->second.size();
 }
 
 TimeSeries::TimeSeries() {
@@ -66,40 +75,53 @@ float TimeSeries::valueAtTime(const string &propertyName, int rowIndex) const {
 //loads a csv file into the property-name-to-column map
 void TimeSeries::loadFromCSVFile(string CSVfileName) {
 
-    string line, columnName;
-    float val;
+    string line;
+
     ifstream file(CSVfileName);
-//if the file is open and associated with the ifstream object, we continue. otherwise, we throw an exception.
+    //if the file is open and associated with the ifstream object, we continue. otherwise, we throw an exception.
     if (!file.is_open()) throw runtime_error("Couldn't open file");
 
     if (file.good()) { //if the file is ready to be read
         getline(file, line); //we put the first line of the file in the line variable
-
-        stringstream sstream(line);
-
-        while (getline(sstream, columnName, ',')) {
-            this->propertiesRow.push_back(columnName); //set the properties row
-            // initialize the empty column of the corresponding property name
-            this->propertyNamesToColumns.insert({columnName, vector<float>{}});
-
-        }
+        parseNames(line);
     }
 
-
     while (getline(file, line)) { //for every line in the file (excluding the first one)
-        stringstream sstream(line);
-        this->numOfRows++;
-        int colIdx = 0;
-        while (sstream >> val) { // if we havn't read all the line data
-            //add the value to corresponding column (according to order from left to right)
-            this->propertyNamesToColumns.at(this->propertiesRow[colIdx]).push_back(val);
-            if (sstream.peek() == ',') sstream.ignore(); // ignore commas
-            colIdx++; //increment the column index
-        }
+        parseLine(line);
     }
 
     file.close(); //close the file
+}
 
+void TimeSeries::parseNames(const string& line) {
+    string columnName;
+    stringstream sstream(line);
+    while (getline(sstream, columnName, ',')) {
+        this->propertiesRow.push_back(columnName); //set the properties row
+        // initialize the empty column of the corresponding property name
+        this->propertyNamesToColumns.insert({columnName, vector<float>{}});
+    }
+}
 
+void TimeSeries::parseLine(const string& line) {
+    stringstream sstream(line);
+    float val;
+    int colIdx = 0;
+    while (sstream >> val) { // if we havn't read all the line data
+        //add the value to corresponding column (according to order from left to right)
+        this->propertyNamesToColumns.at(this->propertiesRow[colIdx]).push_back(val);
+        if (sstream.peek() == ',') sstream.ignore(); // ignore commas
+        colIdx++; //increment the column index
+    }
+}
+
+void TimeSeries::parseColumn(const string& line, const string& content) {
+    float val;
+    stringstream sstream(content);
+    while (sstream >> val) { // if we havn't read all the line data
+        //add the value to corresponding column (according to order from left to right)
+        this->propertyNamesToColumns.at(line).push_back(val);
+        if (sstream.peek() == ',') sstream.ignore(); // ignore commas
+    }
 }
 

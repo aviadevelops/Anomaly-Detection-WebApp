@@ -15,14 +15,18 @@ function getAnomalies() {
 
 }
 
-
-anomalyDetector.createTrainTS("anomalyTrain.csv");
-anomalyDetector.createTestTS("anomalyTest.csv");
+let parsedJson = {"altitude_gps":[
+        100, 110, 20, 120
+    ],
+    "heading_gps":[
+        0.6,0.59,0.54, 0.51
+    ]};
+anomalyDetector.createTrainTS(parsedJson);
+anomalyDetector.createTestTS(parsedJson);
 anomalyDetector.learnNormal("regression");
 anomalyDetector.detect();
 console.log(anomalyDetector.getStatus());
 console.log(getAnomalies());
-
 
 
 

@@ -20,6 +20,7 @@ class TimeSeries {
 
 public:
     TimeSeries(string CSVfileName);
+    TimeSeries::TimeSeries(const map<string, string>& parsedJson);
     TimeSeries();
 
 
@@ -37,6 +38,11 @@ public:
 
     void loadFromCSVFile(string CSVfileName);
 
+    void parseNames(const string& line);
+
+    void parseLine(const string& line);
+
+    void parseColumn(const string& line, const string& content);
 };
 
 

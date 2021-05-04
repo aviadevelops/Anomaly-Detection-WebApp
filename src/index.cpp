@@ -1,10 +1,11 @@
 //
 // Created by Arthur on 5/1/2021.
 //
+#include <vector>
+#include <map>
 #include <napi.h>
 #include "helloworld.h"
 #include "timeseries.h"
-#include <vector>
 #include "SimpleAnomalyDetector.h"
 #include "HybridAnomalyDetector.h"
 #include "AnomalyDetector.h"
@@ -43,20 +44,36 @@ std::string detectorType;
     }
 
 
+map<std::string, std::string> objectToMap(Napi::Object object) {
+
+    map<std::string, std::string> newMap;
+    auto keys = object.GetPropertyNames();
+    const auto N = keys.Length();
+    Napi::Value val;
+    std::string key;
+    std::string value;
+    for (auto i = 0; i < N ; i++) {
+        val = keys[i];
+        key = val.ToString();
+        value = object.Get(keys[i]).ToString();
+        newMap.insert({key, value});
+    }
+    return newMap;
+}
 
 void createTrainTS(const Napi::CallbackInfo& info) {
 
     Napi::Env env = info.Env();
-    std::string trainPath = info[0].As<Napi::String>();
-    trainTS = TimeSeries(trainPath);
+    map<std::string, std::string> newMap = objectToMap(info[0].As<Napi::Object>());
+    trainTS = TimeSeries(newMap);
 }
 
 
 void createTestTS(const Napi::CallbackInfo& info) {
 
     Napi::Env env = info.Env();
-    std::string testPath = info[0].As<Napi::String>();
-    testTS = TimeSeries(testPath);
+    map<std::string, std::string> newMap = objectToMap(info[0].As<Napi::Object>());
+    testTS = TimeSeries(newMap);
 }
 
 void learnNormal(const Napi::CallbackInfo& info){
@@ -95,8 +112,6 @@ void detect(const Napi::CallbackInfo& info){
 Napi::Object getAnomalies(const Napi::CallbackInfo& info) {
 
     Napi::Env env = info.Env();
-
-
 
     vector<pair<int, int>> anomalies = uniteContinuousAnomalies();
     std::string result="";

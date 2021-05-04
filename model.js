@@ -31,12 +31,12 @@ class Model {
         this.anomalyDetector.learnNormal(detectorType);
     }
 
-    createTrainTS(path) {
-        this.anomalyDetector.createTrainTS(path);
+    createTrainTS(parsedJson) {
+        this.anomalyDetector.createTrainTS(parsedJson);
     }
 
-    createTestTS(path) {
-        this.anomalyDetector.createTestTS(path);
+    createTestTS(parsedJson) {
+        this.anomalyDetector.createTestTS(parsedJson);
     }
 
     detect() {

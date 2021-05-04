@@ -55,7 +55,7 @@ class RESTfulAPI {
         app.post("/api/model", function (req, res) {
             let model_type = req.query.model_type;
             let model = server.getReadyModel();
-            // let train_data = req.body.train_data;
+            //let train_data = req.body.train_data;
             model.createTrainTS("anomalyTrain.csv"); // need to get the csv first
             if (model_type === "regression") {
                 model.learnNormal("regression");
