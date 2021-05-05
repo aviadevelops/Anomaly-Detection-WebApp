@@ -57,5 +57,9 @@ exports.getReadyModel = function () {
     return modelFound;
 };
 
+exports.deleteModel = function (id) {
+    delete dict[id];
+};
+
 
 

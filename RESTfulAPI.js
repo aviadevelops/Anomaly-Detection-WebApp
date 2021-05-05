@@ -125,14 +125,16 @@ class RESTfulAPI {
 
         app.delete("/api/model", function (req, res) {
             let model_id = req.query.model_id;
+            let model = server.getModel(model_id);
             console.log(model_id);
-            let isExistingModel = false;
+            let isExistingModel = model!==-1;
             if (!isExistingModel) {
                 res.status(404);
                 console.log(JSON.stringify("Cannot Delete Model"));
                 res.send(JSON.stringify("Cannot Delete Model"));
             } else {
                 res.status(200);
+                server.deleteModel(model_id);
                 console.log(JSON.stringify("Successfully Deleted Model"));
                 res.send(JSON.stringify("Successfully Deleted Model"));
                 // delete model

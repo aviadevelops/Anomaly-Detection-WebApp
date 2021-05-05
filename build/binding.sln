@@ -1,11 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "anomalydetector", "anomalydetector.vcxproj", "{64272049-81C5-9A43-7976-D8A8BAA2A1AF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "anomalydetector", "anomalydetector.vcxproj", "{7F29E3A9-9993-0943-A4C8-7201C6D4DB72}"
 	ProjectSection(ProjectDependencies) = postProject
-		{779DAFA5-A7E6-C84D-56D4-6EA62ABBCB8B} = {779DAFA5-A7E6-C84D-56D4-6EA62ABBCB8B}
+		{87923CD4-1660-FCA3-56B9-A628E2AFADE1} = {87923CD4-1660-FCA3-56B9-A628E2AFADE1}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nothing", "node_modules\node-addon-api\nothing.vcxproj", "{779DAFA5-A7E6-C84D-56D4-6EA62ABBCB8B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nothing", "node_modules\node-addon-api\nothing.vcxproj", "{87923CD4-1660-FCA3-56B9-A628E2AFADE1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(node_modules)", "..\node_modules", "{9D350B9E-06FB-960D-859F-B43C9597383A}"
 EndProject
@@ -17,20 +17,20 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{64272049-81C5-9A43-7976-D8A8BAA2A1AF}.Debug|x64.ActiveCfg = Debug|x64
-		{64272049-81C5-9A43-7976-D8A8BAA2A1AF}.Debug|x64.Build.0 = Debug|x64
-		{64272049-81C5-9A43-7976-D8A8BAA2A1AF}.Release|x64.ActiveCfg = Release|x64
-		{64272049-81C5-9A43-7976-D8A8BAA2A1AF}.Release|x64.Build.0 = Release|x64
-		{779DAFA5-A7E6-C84D-56D4-6EA62ABBCB8B}.Debug|x64.ActiveCfg = Debug|x64
-		{779DAFA5-A7E6-C84D-56D4-6EA62ABBCB8B}.Debug|x64.Build.0 = Debug|x64
-		{779DAFA5-A7E6-C84D-56D4-6EA62ABBCB8B}.Release|x64.ActiveCfg = Release|x64
-		{779DAFA5-A7E6-C84D-56D4-6EA62ABBCB8B}.Release|x64.Build.0 = Release|x64
+		{7F29E3A9-9993-0943-A4C8-7201C6D4DB72}.Debug|x64.ActiveCfg = Debug|x64
+		{7F29E3A9-9993-0943-A4C8-7201C6D4DB72}.Debug|x64.Build.0 = Debug|x64
+		{7F29E3A9-9993-0943-A4C8-7201C6D4DB72}.Release|x64.ActiveCfg = Release|x64
+		{7F29E3A9-9993-0943-A4C8-7201C6D4DB72}.Release|x64.Build.0 = Release|x64
+		{87923CD4-1660-FCA3-56B9-A628E2AFADE1}.Debug|x64.ActiveCfg = Debug|x64
+		{87923CD4-1660-FCA3-56B9-A628E2AFADE1}.Debug|x64.Build.0 = Debug|x64
+		{87923CD4-1660-FCA3-56B9-A628E2AFADE1}.Release|x64.ActiveCfg = Release|x64
+		{87923CD4-1660-FCA3-56B9-A628E2AFADE1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AF891C37-E709-9CCC-0D50-0CCCC8CCC563} = {9D350B9E-06FB-960D-859F-B43C9597383A}
-		{779DAFA5-A7E6-C84D-56D4-6EA62ABBCB8B} = {AF891C37-E709-9CCC-0D50-0CCCC8CCC563}
+		{87923CD4-1660-FCA3-56B9-A628E2AFADE1} = {AF891C37-E709-9CCC-0D50-0CCCC8CCC563}
 	EndGlobalSection
 EndGlobal
