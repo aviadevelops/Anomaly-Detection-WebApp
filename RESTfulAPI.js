@@ -1,9 +1,5 @@
 const server = require(__dirname + "/server.js");
 const Model = require(__dirname + "/model.js");
-let sum = 0, cx = 0, cy = 0, radius = 0;
-
-
-
 
 
 exports.createAPI = function (app) {
@@ -17,14 +13,9 @@ class RESTfulAPI {
 
         app.get("/", function (req, res) {
 
-            res.render("list", {
-                sum: sum,
-                cx: cx,
-                cy: cy,
-                radius: radius
-            });
-
-
+            res.sendFile('index.html', {root: __dirname})
+            //res.sendFile('scripts/require.js', , {root: __dirname}
+            //res.sendFile('front-end.js', {root: __dirname})
         });
 
 
@@ -91,35 +82,6 @@ class RESTfulAPI {
             res.send(JSON.stringify(anomalies));
 
 
-        });
-
-
-        app.post("/", function (req, res) {
-            const x = parseInt(req.body.x);
-            const y = parseInt(req.body.y);
-
-            sum = x + y;
-            let points = [{x: 0, y: 0}, {x: 10, y: 10}, {x: 20, y: 20}, {x: 50, y: 50}];
-            cx = 1;
-            cy = 2;
-            radius = 3;
-
-            res.set({
-                model_id: 3,
-                upload_time: "2021-04-30T17:31:50Z",
-                status: "ready"
-            });
-
-            res.redirect("/");
-
-
-            // if (req.body.list === "Work") {
-            //   workItems.push(item);
-            //   res.redirect("/work");
-            // } else {
-            //   items.push(item);
-            //   res.redirect("/");
-            // }
         });
 
 

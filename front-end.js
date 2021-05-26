@@ -113,8 +113,6 @@
 //
 //
 
-const request = require('request');
-
 function createCSVString(data) {
     let str = ""
     for (let i = 0; i < data.length; i++) {
@@ -132,7 +130,6 @@ function createCSVString(data) {
 
 function csvJSON(csv) {
     const lines = csv.split('\n')
-    const result = []
     const obj = {}
     const headers = lines[0].split(',')
     for (let j = 0; j < headers.length; j++) {
@@ -154,19 +151,15 @@ function csvJSON(csv) {
 
 
 $(document).ready(function () {
-    let xyz = ""
     // The event listener for the file upload
     document.getElementById('trainLoader').addEventListener('change', uploadTrain, false);
     document.getElementById('testLoader').addEventListener('change', uploadTest, false);
-
-
     function upload(evt, s) {
         // if (s === "train") {
         //     console.log("train");
         // } else {
         //     console.log("test");
         // }
-
         var data = null;
         var file = evt.target.files[0];
         var reader = new FileReader();
@@ -176,13 +169,9 @@ $(document).ready(function () {
             data = $.csv.toArrays(csvData);
             if (data && data.length > 0) {
                 if (s === "train") {
-                    request.post(
+                    $.post('http://localhost:9876/api/model?model_type=hybrid',
                         {
-                            url: 'http://localhost:9876/api/model?model_type=hybrid',
-                            json: csvJSON(createCSVString(data)),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
+                            json: csvJSON(createCSVString(data))
                         },
                         function (error, response, body) {
                             // console.log(error);
