@@ -1,22 +1,257 @@
 <!DOCTYPE html>
-<head>
+<head xmlns="http://www.w3.org/1999/html">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
-    <script data-main="scripts/app" src="scripts/require.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="front-end.js"></script>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Style the body */
+        body {
+            font-family: Arial;
+            margin: 0;
+        }
+
+        /* Header/Logo Title */
+        .header {
+            padding: 60px;
+            text-align: center;
+            background: #1abc9c;
+            color: white;
+            font-size: 30px;
+        }
+
+        /* Page Content */
+        .content {
+            padding: 20px;
+        }
+
+        .button {
+            padding: 15px 25px;
+            font-size: 20px;
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+            color: #fff;
+            background-color: #1abc9c;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+
+        .button:hover {
+            background-color: #3e8e41
+        }
+
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+        .Algorithmsbutton:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #655;
+            transform: translateY(4px);
+
+        }
+
+        .Algorithmsbutton {
+            display: inline-block;
+            border-radius: 4px;
+            background-color: #1abc9c;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 20px;
+            padding: 20px;
+            width: 200px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .Algorithmsbutton span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .Algorithmsbutton span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        .Algorithmsbutton:hover span {
+            padding-right: 25px;
+        }
+
+        .Algorithmsbutton:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+        .dropbtn {
+            background-color: #1abc9c;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #1abc9c;
+            min-width: 245px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #1abc9c
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+
+        /*the container must be positioned relative:*/
+        .custom-select {
+            position: relative;
+            font-family: Arial;
+        }
+
+        .custom-select select {
+            display: none; /*hide original SELECT element:*/
+        }
+
+        .select-selected {
+            background-color: DodgerBlue;
+        }
+
+        /*style the arrow inside the select element:*/
+        .select-selected:after {
+            position: absolute;
+            content: "";
+            top: 14px;
+            right: 10px;
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;
+            border-color: #fff transparent transparent transparent;
+        }
+
+        /*point the arrow upwards when the select box is open (active):*/
+        .select-selected.select-arrow-active:after {
+            border-color: transparent transparent #fff transparent;
+            top: 7px;
+        }
+
+        /*style the items (options), including the selected item:*/
+        .select-items div,.select-selected {
+            color: #ffffff;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /*style items (options):*/
+        .select-items {
+            position: absolute;
+            background-color: DodgerBlue;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 99;
+        }
+
+        /*hide the items when the select box is closed:*/
+        .select-hide {
+            display: none;
+        }
+
+        .select-items div:hover, .same-as-selected {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+
+    </style>
+
 </head>
 <body>
-<div id="dvImportSegments" class="fileupload">
-    <fieldset>
-        <legend>Upload your train CSV File</legend>
-        <input type="file" name="File Upload" id="trainLoader" accept=".csv" />
-    </fieldset>
-    <fieldset>
-        <legend>Upload your test CSV File</legend>
-        <input type="file" name="File Upload" id="testLoader" accept=".csv" />
-    </fieldset>
-    <label id="lbl">csv output</label>
+
+<div class="header">
+    <h1>Anoamly Detection Server</h1>
+</div>
+
+
+<button class="button" id="btn_upload_train"> Upload Train CSV</button>
+<input hidden class="button" type="file" name="File Upload" id="trainLoader" accept=".csv"/>
+
+
+
+<button class="button" id="btn_upload_test"> Upload Test CSV</button>
+<input hidden type="file" name="File Upload" id="testLoader" accept=".csv"/>
+
+
+
+<button class="button" id="send_btn">Calculate Anomalies</button>
+
+
+
+<div id="divA" class="dropdown">
+    <button class="dropbtn">Anomaly Detection Algorithms</button>
+    <div id="divB" class="dropdown-content">
+        <button class="Algorithmsbutton" style="vertical-align:middle" onclick="regression_clicked()"
+                id="regression_btn">
+            <span>Linear Regression</span></button>
+        <br></br>
+        <button class="Algorithmsbutton" style="vertical-align:middle" id="hybrid_btn" onclick="hybrid_clicked()"><span>Hybrid</span>
+        </button>
+    </div>
+</div>
+
+
+
+<div id="dvImportSegments" class="fileupload ">
+    <label id="lbl">
+
+    </label>
+
+    <br></br>
+    <select id="features_list"></select>
+
 
 </div>
+
+<canvas id="myChart" style="width:100%;"></canvas>
 </body>
 </html>

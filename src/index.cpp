@@ -206,9 +206,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
                 Napi::Function::New(env, getFeatures)
     );
 
-    exports["runSimpleAsyncWorker"] = Function::New(
-                env, runSimpleAsyncWorker, std::string("runSimpleAsyncWorker")
-    );
 
     return exports;
 }

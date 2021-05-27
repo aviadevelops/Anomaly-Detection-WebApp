@@ -6,24 +6,47 @@ exports.createAPI = function (app) {
     return new RESTfulAPI(app);
 };
 
+
+function parseAnomalies(amomaliesMap) {
+    console.log(amomaliesMap);
+    let anomalies = {};
+
+    Object.keys(amomaliesMap).forEach(columnName => {
+        anomalies[columnName] = []
+    });
+    Object.entries(amomaliesMap).forEach(entry => {
+        const [key, value] = entry;
+        let span = [];
+        Object.entries(value).forEach(entry => {
+            const [key1, value1] = entry;
+            span.push([parseInt(key1), value1]);
+        });
+        anomalies[key] = span;
+    });
+    return anomalies;
+
+}
+
 class RESTfulAPI {
+
 
     constructor(app) {
 
 
         app.get("/", function (req, res) {
-
             res.sendFile('index.html', {root: __dirname})
-            //res.sendFile('scripts/require.js', , {root: __dirname}
-            //res.sendFile('front-end.js', {root: __dirname})
         });
 
+
+        app.get("/front-end.js", function (req, res) {
+            res.sendFile('front-end.js', {root: __dirname})
+        });
 
         app.get("/api/model", function (req, res) {
             let isExistingModel = true;
             let model_id = req.query.model_id;
             let model = server.getModel(model_id);
-            if (model === -1){
+            if (model === -1) {
                 isExistingModel = false;
             }
             if (!isExistingModel) {
@@ -42,12 +65,21 @@ class RESTfulAPI {
 
         });
 
+        app.get("/api/features", function (req, res) {
+            let model = server.getModel(1);
+            res.send(JSON.stringify(model.getFeatures()));
+
+        });
+
 
         app.post("/api/model", function (req, res) {
             let model_type = req.query.model_type;
             let model = server.getReadyModel();
+            console.log(model);
             //let train_data = req.body.train_data;
-            model.createTrainTS("anomalyTrain.csv"); // need to get the csv first
+            // console.log(req.body);
+            // console.log(typeof(req.body));
+            model.createTrainTS(req.body); // need to get the csv first
             if (model_type === "regression") {
                 model.learnNormal("regression");
             } else {
@@ -61,27 +93,29 @@ class RESTfulAPI {
 
 
         app.post("/api/anomaly", function (req, res) {
-            let model_id = req.query.model_id;
+            //let model_id = req.query.model_id;
+            let model_id = 1;
             let model = server.getModel(model_id);
-            model.createTestTS("anomalyTest.csv");
+            // console.log(req.body);
+            // console.log(typeof(req.body));
+            model.createTestTS(req.body);
             model.detect();
             model.updateStatus();
             //let predict_data = req.body.predict_data;
             console.log(model_id);
             let isDone = false;
-            if (model.status==="ready"){
+            if (model.status === "ready") {
                 isDone = true;
             }
             if (!isDone) {
                 res.redirect("/api/model?model_id=" + model_id);
                 return;
             }
-            let anomalies = model.getAnomalies();
+            let anomalies = parseAnomalies(model.getAnomalies());
+
             // let anomalies = {anomalies: {col_name_1: [10, 12], col_name_2: [11, 23]}, reason: "Any"};
-            console.log(JSON.stringify(anomalies));
+
             res.send(JSON.stringify(anomalies));
-
-
         });
 
 
@@ -89,7 +123,7 @@ class RESTfulAPI {
             let model_id = req.query.model_id;
             let model = server.getModel(model_id);
             console.log(model_id);
-            let isExistingModel = model!==-1;
+            let isExistingModel = model !== -1;
             if (!isExistingModel) {
                 res.status(404);
                 console.log(JSON.stringify("Cannot Delete Model"));
@@ -106,8 +140,8 @@ class RESTfulAPI {
         });
 
 
-        app.listen(9876, function () {
-            console.log("Server started on port 9876");
+        app.listen(8080, function () {
+            console.log("Server started on port 8080");
         });
     }
 }

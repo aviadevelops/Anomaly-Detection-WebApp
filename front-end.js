@@ -113,6 +113,7 @@
 //
 //
 
+
 function createCSVString(data) {
     let str = ""
     for (let i = 0; i < data.length; i++) {
@@ -150,39 +151,147 @@ function csvJSON(csv) {
 }
 
 
+let trainFile = null, testFile = null, model_type = "Linear Regression", chart, testFileData, trainFileData,
+    testPointsDict;
+
+function hybrid_clicked() {
+    model_type = "regression";
+    console.log(model_type);
+}
+
+function regression_clicked() {
+    model_type = "hybrid";
+    console.log(model_type);
+}
+
+function load_graph(feature) {
+
+
+
+    let xValues = [], yValues = [];
+    for (let i = 0; i < testPointsDict[feature].length; i++) {
+        xValues.push(i);
+        yValues.push(testPointsDict[feature][i]);
+    }
+
+
+
+    new Chart("myChart", {
+        type: "line",
+        data: {
+            labels: xValues,
+            datasets: [{
+                data: yValues,
+                borderColor: "blue",
+                fill: false
+            }]
+        },
+        options: {
+            legend: {display: false}
+        }
+    });
+
+}
+
+
 $(document).ready(function () {
+
+
     // The event listener for the file upload
-    document.getElementById('trainLoader').addEventListener('change', uploadTrain, false);
-    document.getElementById('testLoader').addEventListener('change', uploadTest, false);
-    function upload(evt, s) {
-        // if (s === "train") {
-        //     console.log("train");
-        // } else {
-        //     console.log("test");
-        // }
-        var data = null;
-        var file = evt.target.files[0];
-        var reader = new FileReader();
+    document.getElementById('trainLoader').addEventListener('change', saveTrain, false);
+    document.getElementById('testLoader').addEventListener('change', saveTest, false);
+
+    $("#send_btn").click(function () {
+        if (trainFile != null && testFile != null) {
+            upload(trainFile, "Train");
+            upload(testFile, "Test");
+            alert("Train and Test files have been uploaded successfully.");
+        } else if (trainFile == null && testFile == null) {
+            alert("Train and Test files are missing.");
+        } else if (trainFile == null) {
+            alert("Train file is missing.");
+        } else {
+            alert("Test file is missing.");
+        }
+    });
+
+    $("#btn_upload_train").click(function () {
+        $("#trainLoader").click();
+    });
+
+    $("#btn_upload_test").click(function () {
+        $("#testLoader").click();
+    });
+
+    $("#features_list").change(function () {
+        let feature = $(this).val();
+        load_graph(feature);
+    });
+
+
+    // $("#divA #divB #regression_btn").click(function () {
+    //     model_type = "regression";
+    // });
+    //
+    // $("#divA #divB #hybrid_btn").click(function () {
+    //     model_type = "hybrid";
+    //     console.log(model_type);
+    // });
+
+    function update_list(featuresDict) {
+        $.each(featuresDict, function (i, item) {
+            $('#features_list').append(new Option(item, item));
+        });
+    }
+
+    function upload(file, type) {
+        let data = null;
+        let reader = new FileReader();
         reader.readAsText(file);
         reader.onload = function (event) {
-            var csvData = event.target.result;
+            let csvData = event.target.result;
             data = $.csv.toArrays(csvData);
             if (data && data.length > 0) {
-                if (s === "train") {
-                    $.post('http://localhost:9876/api/model?model_type=hybrid',
-                        {
-                            json: csvJSON(createCSVString(data))
-                        },
-                        function (error, response, body) {
-                            // console.log(error);
-                            // console.log(response);
-                            console.log(body);
-                            res.send(body);
-                        });
+                let req_url = "";
+                if (type === "Train") {
+                    req_url = 'http://localhost:8080/api/model?model_type=' + model_type;
+                    trainFileData = data;
                 }
-                if (s === "test") {
+                if (type === "Test") {
+                    req_url = 'http://localhost:8080/api/anomaly';
+                    testFileData = data;
+                }
 
-                }
+
+                $.ajax({
+                    url: req_url,
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        // $('#target').html(data.msg);
+                        if (req_url.includes("anomaly")) {
+                            $('#lbl').text(JSON.stringify(data));
+                            $.ajax({
+                                url: 'http://localhost:8080/api/features',
+                                type: 'get',
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                success: function (data) {
+
+                                    update_list(data);
+                                    testPointsDict = csvJSON(createCSVString(testFileData));
+                                    load_graph(Object.keys(csvJSON(createCSVString(testFileData)))[0]);
+                                }
+                            });
+
+                        }
+
+
+                    },
+                    data: JSON.stringify(csvJSON(createCSVString(data)))
+                });
+
 
             }
         };
@@ -192,15 +301,13 @@ $(document).ready(function () {
     }
 
     // Method that reads and processes the selected file
-    function uploadTrain(evt) {
-        upload(evt, "train");
-
+    function saveTrain(evt) {
+        trainFile = evt.target.files[0];
     }
 
     // Method that reads and processes the selected file
-    function uploadTest(evt) {
-        upload(evt, "test");
-
+    function saveTest(evt) {
+        testFile = evt.target.files[0];
     }
 });
 

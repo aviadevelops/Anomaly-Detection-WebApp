@@ -44,20 +44,18 @@ class Model {
     }
 
     getAnomalies() {
-        let startingIndexesMap = this.anomalyDetector.getAnomalies();
-        let anomaliesArray = [];
-        Object.entries(startingIndexesMap).forEach(entry => {
-            const [key, value] = entry;
-            anomaliesArray.push([parseInt(key), value]);
-        });
-        return anomaliesArray;
+        return this.anomalyDetector.getAnomalies();
     }
 
     getJson() {
         return {model_id: this.model_id, upload_time: this.upload_time, status: this.status};
     }
 
-    updateStatus(){
+    getFeatures() {
+        return this.anomalyDetector.getFeatures();
+    }
+
+    updateStatus() {
         this.status = this.anomalyDetector.getStatus();
     }
 
