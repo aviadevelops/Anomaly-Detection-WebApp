@@ -18,9 +18,9 @@ public:
     Circle(Point c, float r) : center(c), radius(r) {}
 };
 // --------------------------------------
-Circle findMinCircle(Point **points, size_t size);
+Circle findMinCircle(Point *points, size_t size);
 
-Circle mecAlg(Point **points, vector<Point> boundaryPoints, size_t size);
+Circle mecAlg(Point *points, vector<Point> boundaryPoints, size_t size);
 
 Circle makeCircle(vector<Point> &boundaryPoints);
 

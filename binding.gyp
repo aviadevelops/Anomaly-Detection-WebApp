@@ -5,13 +5,10 @@
       "cflags!": [ "-fno-exceptions" ],
       "cflags_cc!": [ "-fno-exceptions" ],
       "sources": [
-        "./src/helloworld.cpp",
         "./src/index.cpp",
         "./src/anomaly_detection_util.cpp",
-         "./src/CLI.cpp",
           "./src/HybridAnomalyDetector.cpp",
            "./src/minCircle.cpp",
-            "./src/Server.cpp",
              "./src/SimpleAnomalyDetector.cpp",
               "./src/timeseries.cpp",
 

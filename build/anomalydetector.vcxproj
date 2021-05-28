@@ -135,26 +135,17 @@
     <None Include="..\binding.gyp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\helloworld.cpp">
-      <ObjectFileName>$(IntDir)\src\helloworld.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="..\src\index.cpp">
       <ObjectFileName>$(IntDir)\src\index.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\src\anomaly_detection_util.cpp">
       <ObjectFileName>$(IntDir)\src\anomaly_detection_util.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\src\CLI.cpp">
-      <ObjectFileName>$(IntDir)\src\CLI.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="..\src\HybridAnomalyDetector.cpp">
       <ObjectFileName>$(IntDir)\src\HybridAnomalyDetector.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\src\minCircle.cpp">
       <ObjectFileName>$(IntDir)\src\minCircle.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\src\Server.cpp">
-      <ObjectFileName>$(IntDir)\src\Server.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\src\SimpleAnomalyDetector.cpp">
       <ObjectFileName>$(IntDir)\src\SimpleAnomalyDetector.obj</ObjectFileName>

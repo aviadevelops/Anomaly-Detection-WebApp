@@ -26,7 +26,7 @@ public:
 
     int getNumOfRows();
 
-    void putCopyOfColumn(const string &propertyName, vector<float> &columnCopy) const;
+    vector<float> &getColumnByProperyName(const string &propertyName) const;
 
     void insertPropertiesRow(const vector<string> &propertiesRow);
 

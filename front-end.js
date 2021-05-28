@@ -151,8 +151,8 @@ function csvJSON(csv) {
 }
 
 
-let trainFile = null, testFile = null, model_type = "Linear Regression", chart, testFileData, trainFileData,
-    testPointsDict;
+let trainFile = null, testFile = null, model_type = "hybrid", chart, testFileData, trainFileData,
+    testPointsDict, xValues, anomaliesDict;
 
 function hybrid_clicked() {
     model_type = "regression";
@@ -167,35 +167,101 @@ function regression_clicked() {
 function load_graph(feature) {
 
 
+    let xDict = {};
+    let data = [];
+    let dataSeries = {type: "line"};
+    let dataPoints = [];
+    let anomaliesRangeArray = anomaliesDict[feature];
+    let points = [], xAnomalies = [], anomaliesPoints = [];
+    let str = "";
 
-    let xValues = [], yValues = [];
-    for (let i = 0; i < testPointsDict[feature].length; i++) {
-        xValues.push(i);
-        yValues.push(testPointsDict[feature][i]);
+    if (anomaliesRangeArray != null) {
+        for (let j = 0; j < anomaliesRangeArray.length; j++) {
+            let anomaliesRange = anomaliesRangeArray[j];
+            for (let i = anomaliesRange[0]; i <= anomaliesRange[1]; i++) {
+                xDict[i] = true;
+            }
+            let xStart = anomaliesRange[0], xEnd = anomaliesRange[1];
+            str += xStart + "-" + xEnd + " ";
+        }
     }
 
+    for (let i = 0; i < testPointsDict[feature].length; i++) {
+        if (xDict[i] === true) {
+            anomaliesPoints.push({x: i, y: testPointsDict[feature][i]});
+        }
+        points.push({x: i, y: testPointsDict[feature][i]});
+    }
 
+    dataSeries.dataPoints = dataPoints;
+    data.push(dataSeries);
 
-    new Chart("myChart", {
-        type: "line",
+    if (str === "") {
+        str = "None";
+    }
+
+    let ctx = document.getElementById('myChart').getContext('2d');
+    if (chart !== undefined) {
+        chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
+        type: 'line',
+        title: feature + ": X Axis - timesteps, Y Axis - Values",
         data: {
             labels: xValues,
             datasets: [{
-                data: yValues,
-                borderColor: "blue",
-                fill: false
-            }]
-        },
-        options: {
-            legend: {display: false}
+                label: feature,
+                data: points,
+                borderColor: 'rgb(0, 0, 255)',
+                order: 2
+            },
+                {
+                    label: 'Anomalies in ' + feature + ", X Axis Ranges: " + str,
+                    data: anomaliesPoints,
+                    showLine: false,
+                    borderColor: 'rgb(255, 0, 0)',
+                    backgroundColor: [
+                        'rgb(255, 0, 0)'
+                    ],
+                    order: 1
+
+                }]
         }
     });
 
+
+    //
+    //  chart = new CanvasJS.Chart("myChart",
+    //     {
+    //         zoomEnabled: true,
+    //         title: {
+    //             text: "Initial Zoom to -200 to 300, Pan to -300 to 400"
+    //         },
+    //         data: data  // random generator below
+    //     });
+    //
+    // chart.render();
+    //
+    // // new Chart("myChart", {
+    // //     zoomEnabled: true,
+    // //     data: data,  // random generator below
+    // //     options: {
+    // //         legend: {
+    // //             display: true
+    // //         },
+    // //         responsive: true
+    // //     }
+    // // });
 }
 
 
 $(document).ready(function () {
 
+
+    $("#loading_div").css('display', 'none');
+
+    hybrid_clicked();
 
     // The event listener for the file upload
     document.getElementById('trainLoader').addEventListener('change', saveTrain, false);
@@ -203,6 +269,9 @@ $(document).ready(function () {
 
     $("#send_btn").click(function () {
         if (trainFile != null && testFile != null) {
+            $("#loading_div").css('display', 'block');
+            $("#myChart").css('display', 'none');
+            $('#features_list').empty();
             upload(trainFile, "Train");
             upload(testFile, "Test");
             alert("Train and Test files have been uploaded successfully.");
@@ -244,6 +313,18 @@ $(document).ready(function () {
         });
     }
 
+    function alignAnomalies(anomalies) {
+        Object.keys(anomalies).forEach(feature => {
+            let anomaliesRangeArray = anomalies[feature];
+            for (let j = 0; j < anomaliesRangeArray.length; j++) {
+                let anomaliesRange = anomaliesRangeArray[j];
+                anomaliesRange[0]--;
+                anomaliesRange[1]--;
+            }
+        });
+    }
+
+
     function upload(file, type) {
         let data = null;
         let reader = new FileReader();
@@ -261,8 +342,6 @@ $(document).ready(function () {
                     req_url = 'http://localhost:8080/api/anomaly';
                     testFileData = data;
                 }
-
-
                 $.ajax({
                     url: req_url,
                     type: 'post',
@@ -271,6 +350,15 @@ $(document).ready(function () {
                     success: function (data) {
                         // $('#target').html(data.msg);
                         if (req_url.includes("anomaly")) {
+                            xValues = [];
+                            anomaliesDict = data;
+                            testPointsDict = csvJSON(createCSVString(testFileData));
+                            $("#loading_div").css('display', 'none');
+                            $("#myChart").css('display', 'block');
+                            for (let i = 0; i < testPointsDict[Object.keys(testPointsDict)[0]].length; i++) {
+                                xValues.push(i);
+                            }
+                            alignAnomalies(data);
                             $('#lbl').text(JSON.stringify(data));
                             $.ajax({
                                 url: 'http://localhost:8080/api/features',
@@ -280,8 +368,8 @@ $(document).ready(function () {
                                 success: function (data) {
 
                                     update_list(data);
-                                    testPointsDict = csvJSON(createCSVString(testFileData));
-                                    load_graph(Object.keys(csvJSON(createCSVString(testFileData)))[0]);
+                                    console.log(Object.keys(testPointsDict)[0]);
+                                    load_graph(Object.keys(testPointsDict)[0]);
                                 }
                             });
 
@@ -300,16 +388,17 @@ $(document).ready(function () {
         };
     }
 
-    // Method that reads and processes the selected file
+// Method that reads and processes the selected file
     function saveTrain(evt) {
         trainFile = evt.target.files[0];
     }
 
-    // Method that reads and processes the selected file
+// Method that reads and processes the selected file
     function saveTest(evt) {
         testFile = evt.target.files[0];
     }
-});
+})
+;
 
 
 

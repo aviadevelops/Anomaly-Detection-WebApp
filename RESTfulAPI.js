@@ -8,7 +8,6 @@ exports.createAPI = function (app) {
 
 
 function parseAnomalies(amomaliesMap) {
-    console.log(amomaliesMap);
     let anomalies = {};
 
     Object.keys(amomaliesMap).forEach(columnName => {
@@ -93,6 +92,7 @@ class RESTfulAPI {
 
 
         app.post("/api/anomaly", function (req, res) {
+            console.timeLog();
             //let model_id = req.query.model_id;
             let model_id = 1;
             let model = server.getModel(model_id);
@@ -112,7 +112,7 @@ class RESTfulAPI {
                 return;
             }
             let anomalies = parseAnomalies(model.getAnomalies());
-
+            console.log(anomalies);
             // let anomalies = {anomalies: {col_name_1: [10, 12], col_name_2: [11, 23]}, reason: "Any"};
 
             res.send(JSON.stringify(anomalies));

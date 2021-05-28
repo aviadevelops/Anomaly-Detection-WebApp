@@ -36,9 +36,9 @@ public:
 
     virtual vector<AnomalyReport> detect(const TimeSeries &ts);
 
-    void putPointsVector(vector<Point *> &pointsVector, const vector<float> &f1, const vector<float> &f2);
+    void putPointsVector(vector<Point> &pointsVector, const vector<float> &f1, const vector<float> &f2);
 
-    virtual float calculate_threshold(vector<Point *> &pointsVector, Line &linearReg);
+    virtual float calculate_threshold(vector<Point> &pointsVector, Line &linearReg);
 
     virtual bool anomalyCheck(Point &p, correlatedFeatures &features);
 

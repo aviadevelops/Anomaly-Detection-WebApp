@@ -21,7 +21,7 @@ public:
 
     bool anomalyCheck(Point &p, correlatedFeatures &features) override;
 
-    float calculate_threshold(vector<Point *> &pointsVector, Line &linearReg) override;
+    float calculate_threshold(vector<Point> &pointsVector, Line &linearReg) override;
 
 };
 

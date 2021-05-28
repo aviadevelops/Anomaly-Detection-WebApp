@@ -38,8 +38,8 @@ const vector<float> &TimeSeries::getColumn(const string &propertyName) const {
 }
 
 //copies the corresponding column to the given propertyName into columnCopy
-void TimeSeries::putCopyOfColumn(const string &propertyName, vector<float> &columnCopy) const {
-    columnCopy = getColumn(propertyName);
+vector<float> &TimeSeries::getColumnByProperyName(const string &propertyName) const {
+    return const_cast<vector<float> &>(getColumn(propertyName));
 }
 
 //inserts a new properties row to the property-name-to-column map

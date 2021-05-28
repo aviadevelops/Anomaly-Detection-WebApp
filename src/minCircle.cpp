@@ -4,7 +4,7 @@
 
 // This function creates an empty vector of boundary points,
 // and returns the minimal enclosing circle of the given points in an array
-Circle findMinCircle(Point **points, size_t size) {
+Circle findMinCircle(Point *points, size_t size) {
     vector<Point> boundaryPoints;
     return mecAlg(points, boundaryPoints, size);
 }
@@ -13,7 +13,7 @@ Circle findMinCircle(Point **points, size_t size) {
 
 // this function calculates the minimal enclosing circle,
 // that is corresponding to the points array and the boundary points
-Circle mecAlg(Point **points, vector<Point> boundaryPoints, size_t size) {
+Circle mecAlg(Point *points, vector<Point> boundaryPoints, size_t size) {
     if (size == 0 || boundaryPoints.size() == 3) // If we have an empty array of points,
         // or if we have 3 points we know that are supposed to be on the boundary of the minimal enclosing circle
         // we return the trivial solution that is corresponding to the current boundary points
@@ -21,7 +21,7 @@ Circle mecAlg(Point **points, vector<Point> boundaryPoints, size_t size) {
         return makeCircle(boundaryPoints);
     int removedIndex = --size;
     // We "remove" the last point in the points array
-    Point removedPoint(points[removedIndex]->x, points[removedIndex]->y);
+    Point removedPoint(points[removedIndex].x, points[removedIndex].y);
     // We calculate the minimal enclosing circle of the points array after removing the point
     Circle currentCircle = mecAlg(points, boundaryPoints, size);
     // If the removed point is inside the minimal enclosing circle of the remaining points

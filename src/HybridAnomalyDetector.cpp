@@ -45,7 +45,7 @@ bool HybridAnomalyDetector::anomalyCheck(Point &p, correlatedFeatures &features)
     }
 }
 
-float HybridAnomalyDetector::calculate_threshold(vector<Point *> &pointsVector, Line &linearReg) {
+float HybridAnomalyDetector::calculate_threshold(vector<Point> &pointsVector, Line &linearReg) {
     if (!this->isCircleAnomalyDetector) {
         return SimpleAnomalyDetector::calculate_threshold(pointsVector, linearReg);
     } else {

@@ -8,7 +8,7 @@
 #include "SimpleAsyncWorker.h"
 #include <chrono>
 #include <thread>
-#include "helloworld.h"
+
 #include "timeseries.h"
 #include "SimpleAnomalyDetector.h"
 #include "HybridAnomalyDetector.h"
