@@ -261,7 +261,7 @@ $(document).ready(function () {
 
     $("#loading_div").css('display', 'none');
 
-    hybrid_clicked();
+    regression_clicked();
 
     // The event listener for the file upload
     document.getElementById('trainLoader').addEventListener('change', saveTrain, false);
