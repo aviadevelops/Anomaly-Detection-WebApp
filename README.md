@@ -14,6 +14,7 @@ The web app was built using the MVC architecture.
 - [x] User gets back a JSON which includes reporting of the anomalies occurred, as well as graphic display of the anomalic data points.
 
 ### Folder Structure
+```
 ├── Anomaly-Detection-WebApp
 │   ├── src - cpp files used in calculations.
 │   ├── build - contains the 'built' cpp files that can be used by our code.
@@ -27,6 +28,7 @@ The web app was built using the MVC architecture.
 |   ├── RESTfulAPI.js - a controller code portion of the code, is used in comunication between the server and the user.
 |   ├── server.js - represents the server side that does calculations using the cpp files and gives responses back to the client.
 |   └── various csv files - contains the files that may be used to run the code, the user can submit these files our any other files of their choosing.
+```
 
 ### Required installations
 * Node.js 14.17.0 LTS, Windows (x64)
