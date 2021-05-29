@@ -4,11 +4,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="front-end.js"></script>
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        .label {
+            color: white;
+            padding: 8px;
+        }
+
+        .success {background-color: #04AA6D;} /* Green */
         /* Style the body */
         body {
             font-family: Arial, serif;
@@ -169,58 +173,48 @@
             animation: spin 2s linear infinite;
         }
 
-        select {
-            margin-left: 35px;
-            border: 1px solid #d7d7d7;
-            padding: 5px;
-            border-radius: 2px;
-            text-align: center;
-        }
-
-        select:hover {
-            background: #1abc9c;
-            border: 1px solid #41c9ff;
-            text-align: center;
-        }
-
-        select:focus {
-            -webkit-box-shadow: 0 0 3px 1px #7cdaff;
-            -moz-box-shadow: 0 0 3px 1px #7cdaff;
-            box-shadow: 0 0 3px 1px #7cdaff;
-            text-align: center;
-        }
-
-        select:before {
-            content: "▼";
-            text-align: center;
-        }
-
-        option {
-            background: #1abc9c;
-            border-color: #41c9ff;
-            border-radius: 2px;
-            line-height: 18px;
-            outline: none;
-            -webkit-box-shadow: 0 0 3px 1px #41c9ff;
-            -moz-box-shadow: 0 0 3px 1px #41c9ff;
-            box-shadow: 0 0 3px 1px #41c9ff;
-            text-align: center;
-        }
-
-        option:focus {
-            -webkit-box-shadow: 0 0 3px 1px #7cdaff;
-            -moz-box-shadow: 0 0 3px 1px #7cdaff;
-            box-shadow: 0 0 3px 1px #7cdaff;
-            text-align: center;
-        }
-
         .center {
             margin: 0;
-            position: absolute;
+            position: relative;
             top: 50%;
             left: 50%;
             -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
+        }
+
+        .optionbox {
+            position: relative;
+            display: inline-block;
+        }
+
+        .optionbox select {
+            background: #1abc9c;
+            color: #fff;
+            padding: 10px;
+            width: 250px;
+            height: 50px;
+            border: none;
+            font-size: 20px;
+            -webkit-appearance: button;
+            outline: none
+        }
+
+        .optionbox:before {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 50px;
+            width: 50px;
+            background: #1abc9c;
+            text-align: center;
+            line-height: 50px;
+            color: #fff;
+            font-size: 30px;
+            pointer-events: none
+        }
+
+        .optionbox:hover:before {
+            background: #1abc9c
         }
 
         @-webkit-keyframes spin {
@@ -262,15 +256,11 @@
     </div>
 </div>
 
-<br/>
-<div id="dvImportSegments" class="fileupload ">
-    <label for="features_list"></label>
-    <select id="features_list"><span>Features</span>></select>
+<div id="dvImportSegments" class="optionbox">
+    <select id="features_list"></select>
 </div>
 
-<br/>
-
-<div class="buttonDiv">
+<div class="buttonDiv" style="text-align: center">
     <br/>
     <button class="button" id="btn_upload_train"> Upload Train CSV</button>
     <input hidden class="button" type="file" name="File Upload" id="trainLoader" accept=".csv"/>
@@ -280,14 +270,26 @@
 
     <button class="button" id="send_btn">Calculate Anomalies</button>
     <br/>
+
+    <br/>
+
+    <label id="lbl" class="label success">Anomalies will appear here: </label>
 </div>
 
 <br/>
 <br/>
 <br/>
 <br/>
-<label id="lbl"></label>
+<br/>
+<br/>
+<br/>
+
+
+<br/>
+
 <div class="loader center" id="loading_div" style="width: max-content"></div>
+
 <canvas id="myChart" style="width:100%;"></canvas>
+
 </body>
 </html>

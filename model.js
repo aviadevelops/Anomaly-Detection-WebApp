@@ -21,10 +21,9 @@ class Model {
         let offset = new Date().getTimezoneOffset(), o = Math.abs(offset);
         let timeZone = (offset < 0 ? "+" : "-") + ("00" + Math.floor(o / 60)).slice(-2) + "." + ("00" + (o % 60)).slice(-2);
 
-        let datetime = currentdate.getFullYear() + "-" + ("0" + (currentdate.getMonth() + 1)).slice(-2) + "-" + ("0" + currentdate.getDate()).slice(-2) + "T" + ("0" + currentdate.getHours()).slice(-2) + ":"
+        return currentdate.getFullYear() + "-" + ("0" + (currentdate.getMonth() + 1)).slice(-2) + "-" + ("0" + currentdate.getDate()).slice(-2) + "T" + ("0" + currentdate.getHours()).slice(-2) + ":"
             + ("0" + currentdate.getMinutes()).slice(-2) + ":"
             + ("0" + currentdate.getSeconds()).slice(-2) + timeZone;
-        return datetime;
     }
 
     learnNormal(detectorType) {
@@ -58,5 +57,4 @@ class Model {
     updateStatus() {
         this.status = this.anomalyDetector.getStatus();
     }
-
 }
