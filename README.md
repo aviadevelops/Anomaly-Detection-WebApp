@@ -17,7 +17,7 @@ The web app was built using the MVC architecture.
 
 
 ### Required installations
-* Node.js 14.17.0 LTS ,Windows (x64)
+* Node.js 14.17.0 LTS, Windows (x64)
 
 ### Running The App
 1. Download this repository.
