@@ -19,9 +19,11 @@ Circle mecAlg(Point *points, vector<Point> boundaryPoints, size_t size) {
         // we return the trivial solution that is corresponding to the current boundary points
         // (see documentation of make-circle function)
         return makeCircle(boundaryPoints);
-    int removedIndex = --size;
+    int removedIndex = rand() % size;
     // We "remove" the last point in the points array
     Point removedPoint(points[removedIndex].x, points[removedIndex].y);
+    swap(points[removedIndex], points[size-1]);
+    size--;
     // We calculate the minimal enclosing circle of the points array after removing the point
     Circle currentCircle = mecAlg(points, boundaryPoints, size);
     // If the removed point is inside the minimal enclosing circle of the remaining points

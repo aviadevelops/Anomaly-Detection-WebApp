@@ -5,15 +5,12 @@
 #include <vector>
 #include <map>
 #include <napi.h>
-#include "SimpleAsyncWorker.h"
 #include <chrono>
 #include <thread>
-
 #include "timeseries.h"
 #include "SimpleAnomalyDetector.h"
 #include "HybridAnomalyDetector.h"
 #include "AnomalyDetector.h"
-#include "SimpleAsyncWorker.h"
 
 vector <AnomalyReport> reportsVector;
 TimeSeries trainTS = TimeSeries(), testTS = TimeSeries();
@@ -21,28 +18,6 @@ SimpleAnomalyDetector simpleAD;
 HybridAnomalyDetector hybridAD;
 std::string status = "ready";
 std::string detectorType;
-
-
-
-
-
-SimpleAsyncWorker::SimpleAsyncWorker(Function& callback, int runTime)
-    : AsyncWorker(callback), runTime(runTime){};
-
-void SimpleAsyncWorker::Execute() {
-
-};
-
-void SimpleAsyncWorker::OnOK() {
-
-};
-
-void runSimpleAsyncWorker(const CallbackInfo& info) {
-  int runTime = info[0].As<Number>();
-  Function callback = info[1].As<Function>();
-  SimpleAsyncWorker* asyncWorker = new SimpleAsyncWorker(callback, runTime);
-  asyncWorker->Queue();
-};
 
 // unite sequence of anomalies with the same description
 // unite sequence of anomalies with the same description
