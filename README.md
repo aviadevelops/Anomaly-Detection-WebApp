@@ -21,7 +21,7 @@ The web app was built using the MVC architecture.
 
 ### Running The App
 1. Download this repository.
-2. run server.js through the command line or a working enviorment.
+2. Run "node server.js" through the command line, or otherwise run the server.js file using a working enviorment.
 3. The server will then start running on the local host machine. The server listens on port 8080.
 4. Open the web application using a browser of your choice, by entering the URL http://localhost:8080
 5. Upload a .csv file for training your model using the "upload train CSV" button. Then, upload a .csv file in which you would like to find anomalies using the "upload test CSV" button. Choose an anomaly detection algorith from the corresponding list.
@@ -37,3 +37,4 @@ External users can use our implemented RESTful-API to communicate with the anoma
 6. DELETE /api/model (model_id): deletes given model from server.
 
 ### Additional Links
+- [UML Diagram](uml_fixed.png)
