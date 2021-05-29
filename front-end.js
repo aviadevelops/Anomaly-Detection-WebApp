@@ -155,12 +155,12 @@ let trainFile = null, testFile = null, model_type = "hybrid", chart, testFileDat
     testPointsDict, xValues, anomaliesDict;
 
 function hybrid_clicked() {
-    model_type = "regression";
+    model_type = "hybrid";
     console.log(model_type);
 }
 
 function regression_clicked() {
-    model_type = "hybrid";
+    model_type = "regression";
     console.log(model_type);
 }
 
