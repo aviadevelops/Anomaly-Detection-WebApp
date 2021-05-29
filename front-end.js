@@ -1,119 +1,3 @@
-// const anomalyDetector = require('./build/Release/anomalydetector.node');
-// const Model = require(__dirname + "/model.js");
-// const CSV = require('csv-string');
-// const fs = require('fs')
-//
-//
-// function getAnomalies() {
-//     let startingIndexesMap = anomalyDetector.getAnomalies();
-//     //console.log(startingIndexesMap);
-//     let anomalies = {};
-//
-//     Object.keys(startingIndexesMap).forEach(columnName => {
-//         anomalies[columnName] = []
-//     });
-//     Object.entries(startingIndexesMap).forEach(entry => {
-//         const [key, value] = entry;
-//         let span = [];
-//         Object.entries(value).forEach(entry => {
-//             const [key1, value1] = entry;
-//             span.push([parseInt(key1), value1]);
-//         });
-//         anomalies[key] = span;
-//     });
-//     return anomalies;
-//
-// }
-//
-// function csvJSON(csv) {
-//     const lines = csv.split('\n')
-//     const result = []
-//     const obj = {}
-//     const headers = lines[0].split(',')
-//     for (let j = 0; j < headers.length; j++) {
-//         obj[headers[j]] = [];
-//     }
-//     for (let i = 1; i < lines.length; i++) {
-//         if (!lines[i])
-//             continue
-//
-//         const currentline = lines[i].split(',')
-//
-//         for (let j = 0; j < headers.length; j++) {
-//             obj[headers[j]].push(currentline[j]);
-//         }
-//
-//     }
-//     return obj;
-// }
-//
-//
-// function selectFeature() {
-//     let featuresList = document.getElementById("featuresList");
-//
-// }
-//
-// function buttonClick() {
-//     let dataTrain = csvJSON(fs.readFileSync("anomalyTrain.csv", 'utf8'));
-//     let dataTest = csvJSON(fs.readFileSync("anomalyTest.csv", 'utf8'));
-//
-//
-// // console.log(data)
-//     anomalyDetector.createTrainTS(dataTrain);
-//     anomalyDetector.createTestTS(dataTest);
-//     anomalyDetector.learnNormal("hybrid");
-//     anomalyDetector.detect();
-//
-//
-//     let anomalies = getAnomalies();
-//     let json = {anomalies: anomalies, reason: "Sig"};
-//     console.log(JSON.stringify(json));
-//
-//
-//
-//     let features = anomalyDetector.getFeatures();
-//     let featuresArray = [];
-//     Object.entries(features).forEach(entry => {
-//         const [key, value] = entry;
-//         featuresArray.push(value);
-//     });
-//
-//     let featureList = document.getElementById("featuresList");
-//      let b = document.getElementById("arthur")
-//
-//     for (let i = 0; i < featuresArray.length; i++) {
-//         b.innerText = featuresArray[i];
-//         let option = document.getElementById("option");
-//         option.text = featuresArray[i];
-//         featureList.add(option);
-//     }
-//
-//
-// }
-//
-// function addFeature(feature) {
-//     var sel = document.getElementById('featuresList');
-//
-// // create new option element
-//     var opt = document.createElement('option');
-//
-// // create text node to add to option element (opt)
-//     opt.appendChild(document.createTextNode(feature));
-//
-// // set value property of opt
-//     opt.value = 'option value';
-//
-// // add opt to end of select box (sel)
-//     sel.appendChild(opt);
-// }
-//
-//
-//
-//
-//
-//
-
-
 function createCSVString(data) {
     let str = ""
     for (let i = 0; i < data.length; i++) {
@@ -156,12 +40,10 @@ let trainFile = null, testFile = null, model_type = "hybrid", chart, testFileDat
 
 function hybrid_clicked() {
     model_type = "hybrid";
-    console.log(model_type);
 }
 
 function regression_clicked() {
     model_type = "regression";
-    console.log(model_type);
 }
 
 function load_graph(feature) {
@@ -172,7 +54,7 @@ function load_graph(feature) {
     let dataSeries = {type: "line"};
     let dataPoints = [];
     let anomaliesRangeArray = anomaliesDict[feature];
-    let points = [], xAnomalies = [], anomaliesPoints = [];
+    let points = [], anomaliesPoints = [];
     let str = "";
 
     if (anomaliesRangeArray != null) {
@@ -229,30 +111,6 @@ function load_graph(feature) {
                 }]
         }
     });
-
-
-    //
-    //  chart = new CanvasJS.Chart("myChart",
-    //     {
-    //         zoomEnabled: true,
-    //         title: {
-    //             text: "Initial Zoom to -200 to 300, Pan to -300 to 400"
-    //         },
-    //         data: data  // random generator below
-    //     });
-    //
-    // chart.render();
-    //
-    // // new Chart("myChart", {
-    // //     zoomEnabled: true,
-    // //     data: data,  // random generator below
-    // //     options: {
-    // //         legend: {
-    // //             display: true
-    // //         },
-    // //         responsive: true
-    // //     }
-    // // });
 }
 
 
@@ -297,16 +155,6 @@ $(document).ready(function () {
         load_graph(feature);
     });
 
-
-    // $("#divA #divB #regression_btn").click(function () {
-    //     model_type = "regression";
-    // });
-    //
-    // $("#divA #divB #hybrid_btn").click(function () {
-    //     model_type = "hybrid";
-    //     console.log(model_type);
-    // });
-
     function update_list(featuresDict) {
         $.each(featuresDict, function (i, item) {
             $('#features_list').append(new Option(item, item));
@@ -323,7 +171,6 @@ $(document).ready(function () {
             }
         });
     }
-
 
     function upload(file, type) {
         let data = null;
@@ -348,10 +195,10 @@ $(document).ready(function () {
                     dataType: 'json',
                     contentType: 'application/json',
                     success: function (data) {
-                        // $('#target').html(data.msg);
                         if (req_url.includes("anomaly")) {
                             xValues = [];
                             anomaliesDict = data;
+                            console.log("1");
                             testPointsDict = csvJSON(createCSVString(testFileData));
                             $("#loading_div").css('display', 'none');
                             $("#myChart").css('display', 'block');
@@ -359,23 +206,33 @@ $(document).ready(function () {
                                 xValues.push(i);
                             }
                             alignAnomalies(data);
-                            $('#lbl').text(JSON.stringify(data));
+                            console.log("2");
+                            let parsedData = "Anomalies: ";
+                            Object.keys(data).forEach(feature => {
+                                let anomaliesRangeArray = data[feature];
+                                parsedData += feature + ": ";
+                                for (let j = 0; j < anomaliesRangeArray.length; j++) {
+                                    let anomaliesRange = anomaliesRangeArray[j];
+                                    parsedData += anomaliesRange[0] + "-" + anomaliesRange[1] + " ";
+                                    if(j !== anomaliesRangeArray.length-1 ){
+                                        parsedData += ", ";
+                                    }
+                                }
+                            });
+                            console.log("3");
+                            $('#lbl').text(parsedData);
                             $.ajax({
                                 url: 'http://localhost:8080/api/features',
                                 type: 'get',
                                 dataType: 'json',
                                 contentType: 'application/json',
                                 success: function (data) {
-
                                     update_list(data);
-                                    console.log(Object.keys(testPointsDict)[0]);
                                     load_graph(Object.keys(testPointsDict)[0]);
                                 }
                             });
-
                         }
-
-
+                        console.log("4");
                     },
                     data: JSON.stringify(csvJSON(createCSVString(data)))
                 });
@@ -397,8 +254,7 @@ $(document).ready(function () {
     function saveTest(evt) {
         testFile = evt.target.files[0];
     }
-})
-;
+});
 
 
 

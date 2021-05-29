@@ -1,15 +1,11 @@
 const restAPI = require(__dirname + "/RESTfulAPI.js");
 const express = require("express");
-// const bodyParser = require("body-parser");
 const Model = require(__dirname + "/model.js");
 require("ejs")
 const app = express();
 
 
 app.set('view engine', 'ejs');
-// app.use(bodyParser.urlencoded({
-//     extended: true
-// }));
 app.use(express.static("public"));
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({
@@ -23,9 +19,6 @@ restAPI.createAPI(app);
 let dict = {};
 let m1 = new Model.createModel(1); //initial model
 dict[m1.model_id] = m1;
-
-// console.log(dict);
-// console.log(Object.keys(dict).length);
 
 exports.getModel = function (id) {
     if (!(id in dict)) {

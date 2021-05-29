@@ -9,7 +9,6 @@ exports.createAPI = function (app) {
 
 function parseAnomalies(amomaliesMap) {
     let anomalies = {};
-
     Object.keys(amomaliesMap).forEach(columnName => {
         anomalies[columnName] = []
     });
@@ -74,10 +73,6 @@ class RESTfulAPI {
         app.post("/api/model", function (req, res) {
             let model_type = req.query.model_type;
             let model = server.getReadyModel();
-            console.log(model);
-            //let train_data = req.body.train_data;
-            // console.log(req.body);
-            // console.log(typeof(req.body));
             model.createTrainTS(req.body); // need to get the csv first
             if (model_type === "regression") {
                 model.learnNormal("regression");
@@ -92,17 +87,11 @@ class RESTfulAPI {
 
 
         app.post("/api/anomaly", function (req, res) {
-            console.timeLog();
-            //let model_id = req.query.model_id;
             let model_id = 1;
             let model = server.getModel(model_id);
-            // console.log(req.body);
-            // console.log(typeof(req.body));
             model.createTestTS(req.body);
             model.detect();
             model.updateStatus();
-            //let predict_data = req.body.predict_data;
-            console.log(model_id);
             let isDone = false;
             if (model.status === "ready") {
                 isDone = true;
@@ -112,9 +101,6 @@ class RESTfulAPI {
                 return;
             }
             let anomalies = parseAnomalies(model.getAnomalies());
-            console.log(anomalies);
-            // let anomalies = {anomalies: {col_name_1: [10, 12], col_name_2: [11, 23]}, reason: "Any"};
-
             res.send(JSON.stringify(anomalies));
         });
 
@@ -122,7 +108,6 @@ class RESTfulAPI {
         app.delete("/api/model", function (req, res) {
             let model_id = req.query.model_id;
             let model = server.getModel(model_id);
-            console.log(model_id);
             let isExistingModel = model !== -1;
             if (!isExistingModel) {
                 res.status(404);
@@ -135,8 +120,6 @@ class RESTfulAPI {
                 res.send(JSON.stringify("Successfully Deleted Model"));
                 // delete model
             }
-
-
         });
 
 
