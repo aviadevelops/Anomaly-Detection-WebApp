@@ -133,8 +133,6 @@ $(document).ready(function () {
             $('#features_list').empty();
             upload(trainFile, "Train");
             upload(testFile, "Test");
-            trainFile = null;
-            testFile = null;
             alert("Train and Test files have been uploaded successfully.");
         } else if (trainFile == null && testFile == null) {
             alert("Train and Test files are missing.");
