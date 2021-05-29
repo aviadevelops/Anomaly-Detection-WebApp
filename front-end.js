@@ -133,6 +133,8 @@ $(document).ready(function () {
             $('#features_list').empty();
             upload(trainFile, "Train");
             upload(testFile, "Test");
+            trainFile = null;
+            testFile = null;
             alert("Train and Test files have been uploaded successfully.");
         } else if (trainFile == null && testFile == null) {
             alert("Train and Test files are missing.");
@@ -199,7 +201,6 @@ $(document).ready(function () {
                         if (req_url.includes("anomaly")) {
                             xValues = [];
                             anomaliesDict = data;
-                            console.log("1");
                             testPointsDict = csvJSON(createCSVString(testFileData));
                             $("#loading_div").css('display', 'none');
                             $("#myChart").css('display', 'block');
@@ -207,7 +208,6 @@ $(document).ready(function () {
                                 xValues.push(i);
                             }
                             alignAnomalies(data);
-                            console.log("2");
                             let parsedData = "Anomalies: ";
                             Object.keys(data).forEach(feature => {
                                 let anomaliesRangeArray = data[feature];
@@ -220,7 +220,6 @@ $(document).ready(function () {
                                     }
                                 }
                             });
-                            console.log("3");
                             $('#lbl').text(parsedData);
                             $.ajax({
                                 url: 'http://localhost:8080/api/features',
@@ -233,12 +232,9 @@ $(document).ready(function () {
                                 }
                             });
                         }
-                        console.log("4");
                     },
                     data: JSON.stringify(csvJSON(createCSVString(data)))
                 });
-
-
             }
         };
         reader.onerror = function () {
