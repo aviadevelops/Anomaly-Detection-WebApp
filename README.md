@@ -14,7 +14,7 @@ potential customers, whether users of our app or external services. In this proj
 - [x] User Getting back a JSON which includes reporting where the anomalies occurred, and this JSON graphically displayed on the screen.
 
 ### Folder Structure
-'''
+```
 ├── Anomaly-Detection-WebApp
 │   ├── src - cpp files used in calculations.
 │   ├── build - contains the 'built' cpp files that can be used by our code.
@@ -28,7 +28,7 @@ potential customers, whether users of our app or external services. In this proj
 |   ├── RESTfulAPI.js - a controller code portion of the code, is used in comunication between the server and the user.
 |   ├── server.js - represents the server side that does calculations using the cpp files and gives responses back to the client.
 |   └── various csv files - contains the files that may be used to run the code, the user can submit these files our any other files of their choosing.
-'''
+```
 
 ### Required installations
 * Node.js 14.17.0 LTS ,Windows (x64)
