@@ -25,7 +25,7 @@ The web app was built using the MVC architecture.
 3. The server will then start running on the local host machine. The server listens on port 8080.
 4. Open the web application using a browser of your choice, by entering the URL http://localhost:8080
 5. Upload a .csv file for training your model using the "upload train CSV" button. Then, upload a .csv file in which you would like to find anomalies using the "upload test CSV" button. Choose an anomaly detection algorith from the corresponding list.
-6. Press "detect anomalies" and wait for the calculations to complete. The anomalic data points will appear both as text and as red points in the graph - you can hold your cursor on such a point to see it's values.
+6. Press "detect anomalies" and wait for the calculations to complete. Choose a feature from the features list to see it's data graph. The anomalic data points will appear both as text and as red points in the graph - you can hold your cursor on such a point to see it's values.
 
 ### Using the API
 External users can use our implemented RESTful-API to communicate with the anomaly detection server without the need of using the web application. This can be used, for example, for automating the process of detecting anomalies in data regulary. The API contains the following functions:
