@@ -52,3 +52,4 @@ External users can use our implemented RESTful-API to communicate with the anoma
 
 ### Additional Links
 - [UML Diagram](uml_fixed.png)
+- [Video Walkthrough](https://www.youtube.com/watch?v=dVUMB-o3W-E)
