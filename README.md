@@ -51,5 +51,5 @@ External users can use our implemented RESTful-API to communicate with the anoma
 6. DELETE /api/model (model_id): deletes given model from server.
 
 ### Additional Links
-- [UML Diagram](uml_fixed.png)
+- [UML Diagram](uml.png)
 - [Video Walkthrough](https://www.youtube.com/watch?v=dVUMB-o3W-E)
